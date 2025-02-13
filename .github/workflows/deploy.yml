@@ -21,13 +21,13 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "main" ]]; then
             echo "DEPLOY_ENV=production" >> $GITHUB_ENV
-            echo "APP_ID=${{ secrets.APP_ID_PROD }}" >> $GITHUB_ENV
+            echo "APP_ID=${{ secrets.APP_ID_PROD }}" >> $APP_ID
           elif [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
             echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
-            echo "APP_ID=${{ secrets.APP_ID_STAG }}" >> $GITHUB_ENV
+            echo "APP_ID=${{ secrets.APP_ID_STAG }}" >> $APP_ID
           elif [[ "${{ github.ref }}" == "refs/heads/qa" ]]; then
             echo "DEPLOY_ENV=qa" >> $GITHUB_ENV
-            echo "APP_ID=${{ secrets.APP_ID_QA }}" >> $GITHUB_ENV
+            echo "APP_ID=${{ secrets.APP_ID_QA }}" >> $APP_ID
           fi
 
       - name: Deploy on '${{env.GITHUB_ENV}}'
