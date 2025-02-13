@@ -1,18 +1,39 @@
-name: Deploy on productive
+name: Deploy Website
 
 on:
   pull_request:
-    branches: ["main"]
+    branches:
+      - main
+  push:
+    branches:
+      - staging
+      - qa
 
 jobs:
-
-  deploy_server_frontend:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: JorgeLNJunior/render-deploy@v1.4.4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Environment Variables
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "main" ]]; then
+            echo "DEPLOY_ENV=production" >> $GITHUB_ENV
+            echo "APP_ID=${{ secrets.APP_ID_PROD }}" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
+            echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
+            echo "APP_ID=${{ secrets.APP_ID_STAG }}" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == "refs/heads/qa" ]]; then
+            echo "DEPLOY_ENV=qa" >> $GITHUB_ENV
+            echo "APP_ID=${{ secrets.APP_ID_QA }}" >> $GITHUB_ENV
+          fi
+
+      - name: Deploy on '${{env.DEPLOY_ENV}}'
+        uses: JorgeLNJunior/render-deploy@v1.4.4
         with:
-          service_id: ${{ secrets.APP_ID }}
+          service_id: ${{ env.APP_ID }}
           api_key: ${{ secrets.APP_KEY }}
           wait_deploy: true
           github_token: ''
