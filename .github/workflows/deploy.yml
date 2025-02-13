@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "Selected deployment environment: $DEPLOY_ENV"
 
-      - name: Deploy to Environment
+      - name: Deploy to Environment '${{env.DEPLOY_ENV}}'
         run: |
           echo "Deploying to $DEPLOY_ENV environment..."
           # Добави тук реалните команди за деплой, например:
