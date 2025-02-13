@@ -1,4 +1,4 @@
-name: Deployment
+name: Deploy Website
 
 on:
   pull_request:
@@ -15,26 +15,61 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set Environment Variables
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "main" ]]; then
-            set -x echo "DEPLOY_ENV=production" >> $GITHUB_ENV
+            echo "DEPLOY_ENV=production" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
-            set -x echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
+            echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/qa" ]]; then
-            set -x echo "DEPLOY_ENV=qa" >> $GITHUB_ENV
+            echo "DEPLOY_ENV=qa" >> $GITHUB_ENV
           fi
 
-      - name: Deploy on $GITHUB_ENV
+      - name: Show Deployment Environment
+        run: |
+          echo "Selected deployment environment: $DEPLOY_ENV"
+
+      - name: Deploy to Environment
         run: |
           echo "Deploying to $DEPLOY_ENV environment..."
           # Добави тук реалните команди за деплой, например:
-          # ssh user@server "deploy_script.sh $DEPLOY_ENV"
-      - uses: JorgeLNJunior/render-deploy@v1.4.4
-        with:
-          service_id: ${{ secrets.APP_ID }}
-          api_key: ${{ secrets.APP_KEY }}
-          wait_deploy: true
-          github_token: ''
+          # ssh user@server "deploy_script.sh $DEPLOY_ENV
+#name: Deployment
+#
+#on:
+#  pull_request:
+#    branches:
+#      - main
+#  push:
+#    branches:
+#      - staging
+#      - qa
+#
+#jobs:
+#  deploy:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Set Environment Variables
+#        run: |
+#          if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "main" ]]; then
+#            set -x echo "DEPLOY_ENV=production" >> $GITHUB_ENV
+#          elif [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
+#            set -x echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
+#          elif [[ "${{ github.ref }}" == "refs/heads/qa" ]]; then
+#            set -x echo "DEPLOY_ENV=qa" >> $GITHUB_ENV
+#          fi
+#
+#      - name: Deploy on $GITHUB_ENV
+#        uses: JorgeLNJunior/render-deploy@v1.4.4
+#        with:
+#          service_id: ${{ secrets.APP_ID }}
+#          api_key: ${{ secrets.APP_KEY }}
+#          wait_deploy: true
+#          github_token: ''
+#
