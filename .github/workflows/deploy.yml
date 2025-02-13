@@ -20,11 +20,11 @@ jobs:
       - name: Set Environment Variables
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "main" ]]; then
-            echo "DEPLOY_ENV=production" >> $GITHUB_ENV
+            set -x echo "DEPLOY_ENV=production" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
-            echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
+            set -x echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/qa" ]]; then
-            echo "DEPLOY_ENV=qa" >> $GITHUB_ENV
+            set -x echo "DEPLOY_ENV=qa" >> $GITHUB_ENV
           fi
 
       - name: Deploy on $GITHUB_ENV
