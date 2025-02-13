@@ -27,7 +27,7 @@ jobs:
             echo "DEPLOY_ENV=qa" >> $GITHUB_ENV
           fi
 
-      - name: Deploy on '${{env.GITHUB_ENV}}'
+      - name: Deploy on '${{env.DEPLOY_ENV}}'
         run: |
           echo "test"
 #        uses: JorgeLNJunior/render-deploy@v1.4.4
