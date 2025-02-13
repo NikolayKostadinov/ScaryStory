@@ -21,19 +21,16 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "main" ]]; then
             echo "DEPLOY_ENV=production" >> $GITHUB_ENV
-#            echo "APP_ID=${{ secrets.APP_ID_PROD }}" >> $APP_ID_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
             echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
-#            echo "APP_ID=${{ secrets.APP_ID_STAG }}" >> $APP_ID_ENV
           elif [[ "${{ github.ref }}" == "refs/heads/qa" ]]; then
             echo "DEPLOY_ENV=qa" >> $GITHUB_ENV
-#            echo "APP_ID=${{ secrets.APP_ID_QA }}" >> $APP_ID_ENV
           fi
 
       - name: Deploy on '${{env.GITHUB_ENV}}'
-        uses: JorgeLNJunior/render-deploy@v1.4.4
-        with:
-          service_id: ${{ env.APP_ID }}
-          api_key: ${{ secrets.APP_KEY }}
-          wait_deploy: true
-          github_token: ''
+#        uses: JorgeLNJunior/render-deploy@v1.4.4
+#        with:
+#          service_id: ${{ env.APP_ID }}
+#          api_key: ${{ secrets.APP_KEY }}
+#          wait_deploy: true
+#          github_token: ''
